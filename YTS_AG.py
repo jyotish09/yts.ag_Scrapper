@@ -12,12 +12,26 @@ page = session.post('https://yts.ag/')
 popular_movies = BS(page.text,"html.parser").find('div',{'id':'popular-downloads'})
 ##print(popular_movies)
 popular_movies_rating = popular_movies.find_all('h4',{'class':'rating'})
+popular_movies_torrents = popular_movies.find_all('a',{'rel':'nofollow'})
 popular_movies = popular_movies.find_all('a',{'class':'browse-movie-title'})
 
 ##print(popular_movies)
 ##print('\n')
 
-pMR=[]
+##print(popular_movies_torrents)
+
+pMT1080p=[]
+pMT720p=[]
+
+for i in popular_movies_torrents:
+    if(i.get_text()=='1080p'):
+        pMT1080p.append(re.search('(.+)',i['href']).group())
+    if(i.get_text()=='720p'):
+        pMT720p.append(re.search('(.+)',i['href']).group())
+        
+##print(pMT)
+
+pMR=[] ##popular_movies_rating
 
 for i in popular_movies_rating:
     pMR.append(re.search('(\d+\.\d+)',i.get_text()).group())
@@ -26,7 +40,7 @@ for i in popular_movies_rating:
 print('\n')
 
 
-pM=[]
+pM=[]  ##popular_movies
 
 for i in popular_movies:
     pM.append(re.search('(.+)',i.get_text()).group())
@@ -34,11 +48,9 @@ for i in popular_movies:
 
 print ('Trending Downloads in YTS: ' + '\n')
 
-for i,j in zip(pM,pMR):
+for i,j,k,l in zip(pM,pMR,pMT1080p,pMT720p):
     print(i+" - (Rotten Tomatoes : "+j+")")
+    print('1080p Link : '+k)
+    print('720p Link : '+l+ '\n')
 
 print('\n')
-
-
-#Latest Movies
-
