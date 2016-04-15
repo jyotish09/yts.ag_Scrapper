@@ -13,6 +13,9 @@ popular_movies = BS(page.text,"html.parser").find('div',{'id':'popular-downloads
 ##print(popular_movies)
 popular_movies_rating = popular_movies.find_all('h4',{'class':'rating'})
 popular_movies_torrents = popular_movies.find_all('a',{'rel':'nofollow'})
+
+tempList = popular_movies.find_all('div',{'class':'browse-movie-tags'})
+
 popular_movies = popular_movies.find_all('a',{'class':'browse-movie-title'})
 
 ##print(popular_movies)
@@ -20,16 +23,21 @@ popular_movies = popular_movies.find_all('a',{'class':'browse-movie-title'})
 
 ##print(popular_movies_torrents)
 
+##print(temp)
+
 pMT1080p=[]
 pMT720p=[]
+
 
 for i in popular_movies_torrents:
     if(i.get_text()=='1080p'):
         pMT1080p.append(re.search('(.+)',i['href']).group())
-    if(i.get_text()=='720p'):
+    if (i.get_text()=='720p'):
         pMT720p.append(re.search('(.+)',i['href']).group())
         
-##print(pMT)
+print(pMT1080p)
+print(pMT720p)
+
 
 pMR=[] ##popular_movies_rating
 
@@ -54,3 +62,9 @@ for i,j,k,l in zip(pM,pMR,pMT1080p,pMT720p):
     print('720p Link : '+l+ '\n')
 
 print('\n')
+
+
+#Latest Movies
+
+latest_movies = BS(page.text,"html.parser").find('div',{'class':'home-movies'})
+##print(latest_movies)
