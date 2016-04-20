@@ -15,6 +15,14 @@ popular_movies_rating = popular_movies.find_all('h4',{'class':'rating'})
 popular_movies_torrents = popular_movies.find_all('a',{'rel':'nofollow'})
 
 tempList = popular_movies.find_all('div',{'class':'browse-movie-tags'})
+tempList_torrents =[]
+
+for i in tempList:
+    torrents = i.find_all('a',{'rel':'nofollow'})
+    if (len(torrents) == 2):
+        tempList_torrents.append({'720p':(re.search('(.+)',torrents[0]['href']).group()),'1080p':(re.search('(.+)',torrents[1]['href']).group())})
+    else :
+        tempList_torrents.append({'720p':(re.search('(.+)',torrents[0]['href']).group()),'1080p':''})
 
 popular_movies = popular_movies.find_all('a',{'class':'browse-movie-title'})
 
@@ -23,7 +31,8 @@ popular_movies = popular_movies.find_all('a',{'class':'browse-movie-title'})
 
 ##print(popular_movies_torrents)
 
-##print(temp)
+print(tempList_torrents)
+print('\n')
 
 pMT1080p=[]
 pMT720p=[]
@@ -35,8 +44,8 @@ for i in popular_movies_torrents:
     if (i.get_text()=='720p'):
         pMT720p.append(re.search('(.+)',i['href']).group())
         
-print(pMT1080p)
-print(pMT720p)
+##print(pMT1080p)
+##print(pMT720p)
 
 
 pMR=[] ##popular_movies_rating
